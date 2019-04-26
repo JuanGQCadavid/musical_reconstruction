@@ -1,0 +1,404 @@
+<meta message time_signature numerator=4 denominator=4 clocks_per_click=24 notated_32nd_notes_per_beat=8 time=0>
+dict_keys(['type', 'numerator', 'denominator', 'clocks_per_click', 'notated_32nd_notes_per_beat', 'time'])
+dict_values(['time_signature', 4, 4, 24, 8, 0])
+
+<meta message key_signature key='F' time=0>
+dict_keys(['type', 'key', 'time'])
+dict_values(['key_signature', 'F', 0])
+
+<meta message time_signature numerator=3 denominator=4 clocks_per_click=24 notated_32nd_notes_per_beat=8 time=0>
+dict_keys(['type', 'numerator', 'denominator', 'clocks_per_click', 'notated_32nd_notes_per_beat', 'time'])
+dict_values(['time_signature', 3, 4, 24, 8, 0])
+
+control_change channel=0 control=91 value=50 time=0
+dict_keys(['type', 'time', 'channel', 'control', 'value'])
+dict_values(['control_change', 0, 0, 91, 50])
+
+control_change channel=0 control=10 value=73 time=0
+dict_keys(['type', 'time', 'channel', 'control', 'value'])
+dict_values(['control_change', 0, 0, 10, 73])
+
+control_change channel=0 control=91 value=50 time=0
+dict_keys(['type', 'time', 'channel', 'control', 'value'])
+dict_values(['control_change', 0, 0, 91, 50])
+
+control_change channel=0 control=10 value=73 time=0
+dict_keys(['type', 'time', 'channel', 'control', 'value'])
+dict_values(['control_change', 0, 0, 10, 73])
+
+control_change channel=0 control=0 value=0 time=0
+dict_keys(['type', 'time', 'channel', 'control', 'value'])
+dict_values(['control_change', 0, 0, 0, 0])
+
+control_change channel=0 control=32 value=0 time=0
+dict_keys(['type', 'time', 'channel', 'control', 'value'])
+dict_values(['control_change', 0, 0, 32, 0])
+
+program_change channel=0 program=0 time=0
+dict_keys(['type', 'time', 'channel', 'program'])
+dict_values(['program_change', 0, 0, 0])
+
+note_on channel=0 note=60 velocity=70 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 60, 70])
+
+note_on channel=0 note=60 velocity=0 time=0.337890625
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.337890625, 0, 60, 0])
+
+note_on channel=0 note=60 velocity=72 time=0.037109375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.037109375, 0, 60, 72])
+
+note_on channel=0 note=60 velocity=0 time=0.11328125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.11328125, 0, 60, 0])
+
+note_on channel=0 note=62 velocity=83 time=0.01171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.01171875, 0, 62, 83])
+
+note_on channel=0 note=53 velocity=73 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 53, 73])
+
+note_on channel=0 note=57 velocity=72 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 72])
+
+note_on channel=0 note=62 velocity=0 time=0.451171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.451171875, 0, 62, 0])
+
+note_on channel=0 note=60 velocity=72 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 60, 72])
+
+note_on channel=0 note=60 velocity=0 time=0.451171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.451171875, 0, 60, 0])
+
+note_on channel=0 note=65 velocity=85 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 65, 85])
+
+note_on channel=0 note=53 velocity=0 time=0.40234375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.40234375, 0, 53, 0])
+
+note_on channel=0 note=57 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 0])
+
+note_on channel=0 note=65 velocity=0 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 65, 0])
+
+note_on channel=0 note=64 velocity=79 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 64, 79])
+
+note_on channel=0 note=48 velocity=81 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 48, 81])
+
+note_on channel=0 note=58 velocity=81 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 58, 81])
+
+note_on channel=0 note=64 velocity=0 time=0.90234375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.90234375, 0, 64, 0])
+
+note_on channel=0 note=60 velocity=71 time=0.09765625
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.09765625, 0, 60, 71])
+
+note_on channel=0 note=60 velocity=0 time=0.337890625
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.337890625, 0, 60, 0])
+
+note_on channel=0 note=60 velocity=72 time=0.037109375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.037109375, 0, 60, 72])
+
+note_on channel=0 note=48 velocity=0 time=0.02734375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.02734375, 0, 48, 0])
+
+note_on channel=0 note=58 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 58, 0])
+
+note_on channel=0 note=60 velocity=0 time=0.0859375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.0859375, 0, 60, 0])
+
+note_on channel=0 note=62 velocity=85 time=0.01171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.01171875, 0, 62, 85])
+
+note_on channel=0 note=48 velocity=80 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 48, 80])
+
+note_on channel=0 note=58 velocity=79 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 58, 79])
+
+note_on channel=0 note=62 velocity=0 time=0.451171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.451171875, 0, 62, 0])
+
+note_on channel=0 note=60 velocity=69 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 60, 69])
+
+note_on channel=0 note=60 velocity=0 time=0.451171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.451171875, 0, 60, 0])
+
+note_on channel=0 note=67 velocity=90 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 67, 90])
+
+note_on channel=0 note=48 velocity=0 time=0.40234375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.40234375, 0, 48, 0])
+
+note_on channel=0 note=58 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 58, 0])
+
+note_on channel=0 note=67 velocity=0 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 67, 0])
+
+note_on channel=0 note=65 velocity=75 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 65, 75])
+
+note_on channel=0 note=53 velocity=73 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 53, 73])
+
+note_on channel=0 note=57 velocity=73 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 73])
+
+note_on channel=0 note=65 velocity=0 time=0.90234375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.90234375, 0, 65, 0])
+
+note_on channel=0 note=60 velocity=69 time=0.09765625
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.09765625, 0, 60, 69])
+
+note_on channel=0 note=60 velocity=0 time=0.337890625
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.337890625, 0, 60, 0])
+
+note_on channel=0 note=60 velocity=74 time=0.037109375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.037109375, 0, 60, 74])
+
+note_on channel=0 note=53 velocity=0 time=0.02734375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.02734375, 0, 53, 0])
+
+note_on channel=0 note=57 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 0])
+
+note_on channel=0 note=60 velocity=0 time=0.0859375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.0859375, 0, 60, 0])
+
+note_on channel=0 note=72 velocity=99 time=0.01171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.01171875, 0, 72, 99])
+
+note_on channel=0 note=53 velocity=77 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 53, 77])
+
+note_on channel=0 note=57 velocity=79 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 79])
+
+note_on channel=0 note=72 velocity=0 time=0.451171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.451171875, 0, 72, 0])
+
+note_on channel=0 note=69 velocity=74 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 69, 74])
+
+note_on channel=0 note=69 velocity=0 time=0.451171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.451171875, 0, 69, 0])
+
+note_on channel=0 note=65 velocity=66 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 65, 66])
+
+note_on channel=0 note=53 velocity=0 time=0.40234375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.40234375, 0, 53, 0])
+
+note_on channel=0 note=57 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 0])
+
+note_on channel=0 note=65 velocity=0 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 65, 0])
+
+note_on channel=0 note=64 velocity=73 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 64, 73])
+
+note_on channel=0 note=53 velocity=81 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 53, 81])
+
+note_on channel=0 note=58 velocity=84 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 58, 84])
+
+note_on channel=0 note=64 velocity=0 time=0.451171875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.451171875, 0, 64, 0])
+
+note_on channel=0 note=62 velocity=69 time=0.048828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.048828125, 0, 62, 69])
+
+<meta message set_tempo tempo=3750000 time=0.388671875>
+dict_keys(['type', 'tempo', 'time'])
+dict_values(['set_tempo', 3750000, 0.388671875])
+
+note_on channel=0 note=62 velocity=0 time=0.46875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.46875, 0, 62, 0])
+
+<meta message set_tempo tempo=600000 time=0>
+dict_keys(['type', 'tempo', 'time'])
+dict_values(['set_tempo', 600000, 0])
+
+note_on channel=0 note=70 velocity=89 time=0.05859375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.05859375, 0, 70, 89])
+
+note_on channel=0 note=70 velocity=0 time=0.40546875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.40546875, 0, 70, 0])
+
+<meta message set_tempo tempo=3750000 time=0.00234375>
+dict_keys(['type', 'tempo', 'time'])
+dict_values(['set_tempo', 3750000, 0.00234375])
+
+note_on channel=0 note=70 velocity=78 time=0.263671875
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.263671875, 0, 70, 78])
+
+note_on channel=0 note=53 velocity=0 time=0.205078125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.205078125, 0, 53, 0])
+
+note_on channel=0 note=58 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 58, 0])
+
+<meta message set_tempo tempo=600000 time=0>
+dict_keys(['type', 'tempo', 'time'])
+dict_values(['set_tempo', 600000, 0])
+
+note_on channel=0 note=70 velocity=0 time=0.103125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.103125, 0, 70, 0])
+
+note_on channel=0 note=69 velocity=76 time=0.014062499999999999
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.014062499999999999, 0, 69, 76])
+
+note_on channel=0 note=53 velocity=75 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 53, 75])
+
+note_on channel=0 note=57 velocity=75 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 75])
+
+note_on channel=0 note=69 velocity=0 time=0.54140625
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.54140625, 0, 69, 0])
+
+note_on channel=0 note=65 velocity=65 time=0.05859375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.05859375, 0, 65, 65])
+
+note_on channel=0 note=53 velocity=0 time=0.4828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.4828125, 0, 53, 0])
+
+note_on channel=0 note=57 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 0])
+
+note_on channel=0 note=65 velocity=0 time=0.05859375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.05859375, 0, 65, 0])
+
+note_on channel=0 note=67 velocity=77 time=0.05859375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.05859375, 0, 67, 77])
+
+note_on channel=0 note=48 velocity=78 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 48, 78])
+
+note_on channel=0 note=58 velocity=79 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 58, 79])
+
+note_on channel=0 note=67 velocity=0 time=0.54140625
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.54140625, 0, 67, 0])
+
+note_on channel=0 note=48 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 48, 0])
+
+note_on channel=0 note=58 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 58, 0])
+
+note_on channel=0 note=65 velocity=73 time=0.05859375
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0.05859375, 0, 65, 73])
+
+note_on channel=0 note=53 velocity=76 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 53, 76])
+
+note_on channel=0 note=57 velocity=76 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 76])
+
+note_on channel=0 note=65 velocity=0 time=1.6828125
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 1.6828125, 0, 65, 0])
+
+note_on channel=0 note=53 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 53, 0])
+
+note_on channel=0 note=57 velocity=0 time=0
+dict_keys(['type', 'time', 'channel', 'note', 'velocity'])
+dict_values(['note_on', 0, 0, 57, 0])
+
+<meta message end_of_track time=0.00234375>
+dict_keys(['type', 'time'])
+dict_values(['end_of_track', 0.00234375])
+
