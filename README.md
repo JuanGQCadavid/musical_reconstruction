@@ -1,9 +1,9 @@
 # Musical Reconstruction
 
-##How to use
+## How to use
 
 
-##The Gang
+## The Gang
 Develop with love by
 
 * Diego Fonseca Guzmán
