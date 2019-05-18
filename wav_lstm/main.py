@@ -1,13 +1,41 @@
 #! /usr/bin/env python
-import numpy as np
-from scipy.io import wavfile
-import matplotlib.pyplot as plt
+# -*- coding: utf-8 -*-
 
-def graph_data(): 
-    rate, data = wavfile.read('songs/las_mananitas.wav')
-    for i in range(data.shape[1]):
-        graph(rate, data[i:i])
-        show_info("mananitas", data[i:i])
+import string 
+import gensim
+
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+
+from gensim.models.phrases import Phrases, Phraser
+from keras.callbacks import LambdaCallback
+from keras.layers.recurrent import LSTM
+from keras.layers.embeddings import Embedding
+from keras.layers import Dense, Activation
+from keras.models import Sequential
+from keras.utils.data_utils import get_file
+from scipy.io import wavfile
+
+def main():
+    rate, data = wavfile.read('songs/hakuna_matata.wav')
+    vocab = sorted(set(data))
+    data = [data[i:i + 25000] for i in range(0, len(data), 25000)]
+
+    print('\nTraining word2vec...')
+    word_model = gensim.models.Word2Vec(data, size=100, min_count=1, window=5, iter=100)
+    pretrained_weights = word_model.wv.syn0
+    vocab_size, emdedding_size = pretrained_weights.shape
+    print('Result embedding shape:', pretrained_weights.shape)
+    print('Checking similar words:')
+    for word in ['model', 'network', 'train', 'learn']:
+        most_similar = ', '.join('%s (%.2f)' % (similar, dist) for similar, dist in word_model.most_similar(word)[:8])
+        print('  %s -> %s' % (word, most_similar))
+
+    def word2idx(word):
+        return word_model.wv.vocab[word].index
+    def idx2word(idx):
+        return word_model.wv.index2word[idx]
 
 def graph(rate, data):
     time = np.linspace(0, len(data)/rate, num=len(data))
@@ -24,4 +52,4 @@ def show_info(aname, a):
     print ()
 
 if __name__ == "__main__": 
-    graph_data()
+    main()
