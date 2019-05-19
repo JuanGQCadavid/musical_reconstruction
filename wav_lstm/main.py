@@ -20,22 +20,22 @@ from scipy.io import wavfile
 def main():
     rate, data = wavfile.read('songs/hakuna_matata.wav')
     vocab = sorted(set(data))
+    data = data.astype(str)
     data = [data[i:i + 25000] for i in range(0, len(data), 25000)]
-
+    data = [x.tolist() for x in data]
+    
     print('\nTraining word2vec...')
     word_model = gensim.models.Word2Vec(data, size=100, min_count=1, window=5, iter=100)
     pretrained_weights = word_model.wv.syn0
     vocab_size, emdedding_size = pretrained_weights.shape
     print('Result embedding shape:', pretrained_weights.shape)
-    print('Checking similar words:')
-    for word in ['model', 'network', 'train', 'learn']:
-        most_similar = ', '.join('%s (%.2f)' % (similar, dist) for similar, dist in word_model.most_similar(word)[:8])
-        print('  %s -> %s' % (word, most_similar))
 
     def word2idx(word):
         return word_model.wv.vocab[word].index
     def idx2word(idx):
         return word_model.wv.index2word[idx]
+    
+    
 
 def graph(rate, data):
     time = np.linspace(0, len(data)/rate, num=len(data))
@@ -53,3 +53,4 @@ def show_info(aname, a):
 
 if __name__ == "__main__": 
     main()
+    
