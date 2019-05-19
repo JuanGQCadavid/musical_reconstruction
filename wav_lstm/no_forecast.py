@@ -87,7 +87,7 @@ def on_epoch_end(epoch, _):
 model.fit(train_x, train_y,
           batch_size=128,
           epochs=20,
-callbacks=[LambdaCallback(on_epoch_end=on_epoch_end)])
+          callbacks=[LambdaCallback(on_epoch_end=on_epoch_end)])
 
 def graph(rate, data):
     time = np.linspace(0, len(data)/rate, num=len(data))
