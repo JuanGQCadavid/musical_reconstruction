@@ -1,3 +1,16 @@
+
+'''
+  Assumptions: 
+	Shorter time horizons are often easier to predict with higher confidence.
+    Frequency: Perhaps data is provided at a frequency that is too high to 
+	 model or is unevenly spaced through time requiring resampling for 
+	 use in some models.
+    Outliers: Perhaps there are corrupt or extreme outlier values that need to
+	 be identified and handled.
+    Missing: Perhaps there are gaps or missing data that need to be 
+	 interpolated or imputed.
+'''
+
 # univariate stacked lstm example
 from numpy import array
 import numpy as np 
@@ -54,7 +67,7 @@ model.add(LSTM(100, activation='relu'))
 model.add(Dense(1))
 model.compile(optimizer='adam', loss='mse')
 # fit model
-model.fit(X, y, epochs=8, verbose=1)
+model.fit(X, y, epochs=8, batch_size=10, verbose=1)
 # demonstrate prediction
 x_input = raw_seq[:n_steps]
 x_input = x_input.reshape((1, n_steps, n_features))
