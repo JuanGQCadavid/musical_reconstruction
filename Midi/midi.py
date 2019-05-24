@@ -12,19 +12,81 @@
 
 from mido import MidiFile
 
+# multivariate LSTM forecasting
+from numpy import array
+from numpy import hstack
+import numpy as np
+from keras import optimizers
+from keras.models import Sequential
+from keras.layers import LSTM
+from keras.layers import Dense
+
 debug = True
 
 def show_info(mid):
     print("Basic Info..")
+    print("Number of tracks {}: ", len(mid.tracks))
     for i, track in enumerate(mid.tracks): 
         print('Track {}: {}'.format(i, track.name))
     print("Type: {}".format(mid.type))
     print("Length in seconds: {}".format(mid.length))
 
+ 	
+# split a multivariate sequence into samples
+def split_sequences(sequences, n_steps):
+	X, y = list(), list()
+	for i in range(len(sequences)):
+		# find the end of this pattern
+		end_ix = i + n_steps
+		# check if we are beyond the dataset
+		if end_ix > len(sequences)-1:
+			break
+		# gather input and output parts of the pattern
+		seq_x, seq_y = sequences[i:end_ix, :], sequences[end_ix, :]
+		X.append(seq_x)
+		y.append(seq_y)
+	return array(X), array(y)
 
-mid = MidiFile('midi_partitures/el_aguacate.mid')
 
-show_info(mid)
+def unitary_train(tracks):
+    out_seq = np.zeros(len(tracks[0]))
+    for i, track in enumerate(tracks):
+        out_seq = array([track[len(track) - 1] for i in range(len(track))])
+        # convert to [rows, columns] structure
+        track = track.reshape((len(track), 1))
+        out_seq = out_seq.reshape((len(out_seq), 1))
 
-for msg in mid.play():
-    print(msg) # type, channel, note, velocity, time
+    # horizontally stack columns
+    dataset = hstack(tracks)
+    # choose a number of time steps
+    n_steps = 3
+    # convert into input/output
+    X, y = split_sequences(dataset, n_steps)
+    print(X.shape, y.shape)
+    # summarize the data
+    for i in range(len(X)):
+        print(X[i], y[i])
+
+
+def main(): 
+    # Read the file
+    mid = MidiFile('midi_partitures/el_aguacate.mid')
+    
+    n_channels = len(mid.tracks)
+    seconds = mid.length
+    ticks_per_beat = mid.ticks_per_beat
+    ticks_per_second = ticks_per_beat * 2 # (120 beats / 60 seconds). 
+                                          # Default of 120 beats per minute.
+    
+    
+
+    
+    # Play the song ...
+    for msg in mid.play():
+        print(msg) # type, channel, note, velocity, time
+
+        # define input sequences
+
+
+if __name__ == "__main__": 
+    main()
