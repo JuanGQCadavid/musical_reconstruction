@@ -1,4 +1,3 @@
-
 '''
   Assumptions: 
 	Shorter time horizons are often easier to predict with higher confidence.
@@ -13,7 +12,8 @@
 
 # univariate stacked lstm example
 from numpy import array
-import numpy as np 
+import numpy as np
+from keras import optimizers
 from keras.models import Sequential
 from keras.layers import LSTM
 from keras.layers import Dense
@@ -25,7 +25,7 @@ n_features = 1
 # Choose a number of time steps. In our use case this is the WAV file rate.
 n_steps = 3 # Overriden below.
 
-max_sentence_len = 25000 
+max_sentence_len = 25000
 
 # split a univariate sequence into samples
 def split_sequence(sequence, n_steps):
@@ -59,13 +59,16 @@ X, y = split_sequence(raw_seq, n_steps)
 
 # reshape from [samples, timesteps] into [samples, timesteps, features]
 X = X.reshape((X.shape[0], X.shape[1], n_features))
+print(X.shape)
 
 # define model
 model = Sequential()
-model.add(LSTM(100, activation='relu', return_sequences=True, input_shape=(n_steps, n_features)))
-model.add(LSTM(100, activation='relu'))
+model.add(LSTM(n_steps, activation='relu', return_sequences=True, input_shape=(n_steps, n_features)))
+model.add(LSTM(n_steps, activation='relu'))
 model.add(Dense(1))
-model.compile(optimizer='adam', loss='mse')
+adam_optimizer = optimizers.Adam()
+model.compile(optimizer=adam_optimizer, loss='mse')
+
 # fit model
 model.fit(X, y, epochs=8, batch_size=10, verbose=1)
 # demonstrate prediction
