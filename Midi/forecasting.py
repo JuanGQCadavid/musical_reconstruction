@@ -2,7 +2,7 @@
   Assumptions: 
 	Shorter time horizons are often easier to predict with higher confidence.
     Frequency: Perhaps data is provided at a frequency that is too high to 
-	 model or is unevenly spaced through time requiring resampling for 
+	 model or is unevenly spaced through time requiring RESAMPLING for 
 	 use in some models.
     Outliers: Perhaps there are corrupt or extreme outlier values that need to
 	 be identified and handled.
@@ -44,8 +44,6 @@ def split_sequence(sequence, n_steps):
 rate, raw_seq = wavfile.read('songs/hakuna_matata.wav')
 raw_seq = raw_seq[np.logical_not(np.isnan(raw_seq))]
 raw_seq = raw_seq.astype(int)
-
-print(max(raw_seq))
 
 # choose a number of time steps
 n_steps = 1
