@@ -56,6 +56,7 @@ def unitary_train(tracks):
         track = track.reshape((len(track), 1))
         out_seq = out_seq.reshape((len(out_seq), 1))
 
+
     # horizontally stack columns
     dataset = hstack(tracks)
     # choose a number of time steps
@@ -72,21 +73,35 @@ def main():
     # Read the file
     mid = MidiFile('midi_partitures/el_aguacate.mid')
     
-    n_channels = len(mid.tracks)
+    n_channels = 16
     seconds = mid.length
     ticks_per_beat = mid.ticks_per_beat
     ticks_per_second = ticks_per_beat * 2 # (120 beats / 60 seconds). 
                                           # Default of 120 beats per minute.
-    
-    
+    l = []
+    for i, track in enumerate(mid.tracks):
+        l.append(len(track))
+    max_notes = max(l)
 
-    
+    tracks = np.full((n_channels, max_notes + 10000), 60)
+    velocity = np.full((n_channels, max_notes + 10000), 64)
+    time = np.full((n_channels, max_notes + 10000), 0)
+
     # Play the song ...
+    current_time = 0
+    i = 0
     for msg in mid.play():
-        print(msg) # type, channel, note, velocity, time
-
-        # define input sequences
-
+        if (msg.type == 'note_on'):
+            if msg.time != current_time:
+                i = i + 1
+                current_time = msg.time
+            # type, channel, note, velocity, time.
+            tracks[msg.channel][i] = msg.note
+            velocity[msg.channel][i] = msg.velocity
+            time[msg.channel][i] = msg.time
+            # define input sequences.
+    
+    print(tracks)
 
 if __name__ == "__main__": 
     main()
