@@ -32,19 +32,25 @@ def split_song_by_seconds(rate,data,seconds,start_time=0):
     
     return first_part, split_point
 
+def main():
+    song_path = 'songs/hakuna_matata.wav'
+    rate, data = wavfile.read(song_path) #Read the song
 
-song_path = 'songs/hakuna_matata.wav'
-rate, data = wavfile.read(song_path) #Read the song
+    print('rate -> ', rate, ' Data len -> ',len(data))
 
-print('rate -> ', rate, ' Data len -> ',len(data))
+    song_plotter(rate,data)
 
-song_plotter(rate,data)
+    tools = Utilities(percent =0.1, intervals = rate/2, ratio = rate ,level=1)
+    corrupted_with_none = tools.corrupt(data)
 
-tools = Utilities(percent =0.1, intervals = rate/2, ratio = rate ,level=1)
-corrupted_with_none = tools.corrupt(data)
+    song_plotter(rate,corrupted_with_none)
 
-song_plotter(rate,corrupted_with_none)
+    corrupted_with_out_none = tools.reconstruction(corrupted_with_none)
 
-corrupted_with_out_none = tools.reconstruction(corrupted_with_none)
+    wavfile.write('songs/odebrecht_hakuna_matata.wav', rate, corrupted_with_out_none)
 
-wavfile.write('songs/odebrecht_hakuna_matata.wav', rate, corrupted_with_out_none)
+
+if __name__ == '__main__':
+    main()
+
+#corrupted_with_none
