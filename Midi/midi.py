@@ -88,7 +88,7 @@ def main():
     time = np.full((n_channels, max_notes + 10000), 0)
 
     # Play the song ...
-    current_time = 0
+    current_time = 0.0
     i = 0
     for msg in mid.play():
         if (msg.type == 'note_on'):
@@ -104,4 +104,13 @@ def main():
     print(tracks)
 
 if __name__ == "__main__": 
-    main()
+    mid = MidiFile('midi_partitures/el_aguacate.mid')
+    
+    n_channels = 16
+    seconds = mid.length
+    ticks_per_beat = mid.ticks_per_beat
+    ticks_per_second = ticks_per_beat * 2 # (120 beats / 60 seconds). 
+                                          # Default of 120 beats per minute.
+    l = []
+    for i, track in enumerate(mid.tracks):
+        print(len(track))
