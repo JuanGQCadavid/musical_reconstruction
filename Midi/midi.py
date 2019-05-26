@@ -11,6 +11,7 @@
 '''
 
 from mido import MidiFile
+from mido import Message, MidiFile, MidiTrack
 
 # multivariate LSTM forecasting
 from numpy import array
@@ -110,8 +111,14 @@ def main():
     i = 0
     contador = 0
     model = None
-    for msg in mid.play():
+    meta_msgs = []
+    notes_msgs = []
+    for msg in mid.play(meta_messages=True):
+        if msg.is_meta:
+            meta_msgs.append(msg)
+
         if (msg.type == 'note_on'):
+            
             if msg.time != current_time:
                 i = i + 1
                 current_time = msg.time
@@ -119,12 +126,32 @@ def main():
             tracks[msg.channel][i] = msg.note
             velocity[msg.channel][i] = msg.velocity
             time[msg.channel][i] = msg.time
-
             contador = contador + 1
             if contador % 100 == 0:
-                model = unitary_train(tracks[:, contador - 100:contador])
+                #model = unitary_train(tracks[:, contador - 100:contador])
                 break
+
+    # Write the song.
+    file = MidiFile(type=1)
+
+    for meta in enumerate(meta_msgs):
+        print(meta)
+        
+
+    for i in range(0, n_channels):
+        track_i = MidiTrack()
+        
+        for j in range(0, max_notes):
+            track_i.append(Message('note_on', note=tracks[i][j], 
+                                velocity=velocity[i][j], time=time[i][j]))
+        
+        file.tracks.append(track_i)
     
+    file.print_tracks()
+    file.save('fixed_' + mid.filename)
+    print('wrote')
+
+
     '''# demonstrate prediction
     x_input = array([[60, 65, 125], [70, 75, 145], [80, 85, 165]])
     x_input = x_input.reshape((1, n_steps_in, n_features))
