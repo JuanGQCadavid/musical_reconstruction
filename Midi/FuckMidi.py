@@ -44,8 +44,6 @@ def model_stacked_lstm(n_steps,n_features):
 
 def train_batch(notes):
     x,y = split_sequence(notes, n_steps)
-
-
     x = x.reshape((x.shape[0],x.shape[1],n_features))
 
     model.fit(x,y,epochs=epochs,verbose=verbose)
@@ -71,14 +69,14 @@ def ralph(notes,percent):
     for i,note in enumerate(notes):
         ran  = random.random()
 
-        if(ran < percent) and (i > 20):
+        if(ran < percent) and (i > (n_steps * 2)):
             broken_pos[i] = True
             note.note = 0
 
         
     return notes,broken_pos
 
-def write_midi(mid,my_tracks,diomio_number):
+def write_midi(mid,my_tracks,path):
     file = MidiFile(type=mid.type)
     file.ticks_per_beat = mid.ticks_per_beat
     for track in my_tracks:
@@ -93,7 +91,7 @@ def write_midi(mid,my_tracks,diomio_number):
         
         file.tracks.append(track_i)
         
-    file.save('diomio_'+str(diomio_number)+'.mid')
+    file.save(path)
     print('wrote')
 
 def read_midi(mid):
@@ -119,23 +117,37 @@ def predict(sequece):
     return yhat
 
 def reparador_felix_jr(tracks):
+    global model
     meta_msgs, notes_msgs, flags = tracks
+    model = model_stacked_lstm(n_steps,n_features)
     
     notes = []
+    realn = []
     for msg in notes_msgs:
         notes.append(msg.note)
 
     notes = np.array(notes)
-
-    for i,flag in enumerate(flags):
+    max_i = 0
+    for i in flags:
+        if i:
+            max_i = max_i + 1
+    print (max_i)
+    actual_i = 0
+    for i, flag in enumerate(flags):
         if flag:
-            train_batch(notes[0:i])
-            note_predicted = predict(notes[i-n_steps:i])
+            start = i - (n_steps*2) if i > n_steps else 0
+            train_batch(notes[start:i])
+            note_predicted = predict(notes[i - n_steps:i])[0][0]
             notes[i] = round(note_predicted) if note_predicted < 127 else 127
-    
+            print(actual_i, '/' , max_i)
+            actual_i = actual_i + 1
+
+            notes_msgs[i].note = notes[i]
+
     tracks[0] = meta_msgs
-    tracks[1] = notes.tolist()
-    tracks[2] = flags
+    tracks[1] = notes_msgs
+    tracks[2] = flags 
+            
 
     return tracks
 
@@ -143,7 +155,8 @@ model = None
 n_steps = 10 # n notes used to predict n features
 n_features = 1 # Only one track
 epochs = 50 # n passes through the dataset 
-verbose = 1  #Show logs 
+verbose = 0  #Show logs
+damage_rate = 0.2 # Damage
 
 def main():
     global model, n_steps, n_features
@@ -151,33 +164,33 @@ def main():
     diomio_number = '9'
 
     # Read the file
-    mid = MidiFile('midi_partitures/el_aguacate.mid')
-    
-    
+    mid = MidiFile('midi_partitures/happy.mid')
+
     my_tracks = read_midi(mid)
+    real = my_tracks.copy()
 
     #Dañar
     for track in my_tracks:
         notes = track[1]
-        track[1],track[2] = ralph(notes,0.4)
+        track[1],track[2] = ralph(notes, damage_rate)
     
     #escribir
-    write_midi(mid,my_tracks,'broken_'+diomio_number)
+    path = mid.filename.split('.')
+    path = path[0] + '_broken.' + path[1]
+    write_midi(mid,my_tracks, path)
 
     model = model_stacked_lstm(n_steps,n_features)
     #Reparar
+
     for pos,track in enumerate(my_tracks):
+        print("TRACK ", pos)
         my_tracks[pos] = reparador_felix_jr(track)
 
-    write_midi(mid,my_tracks,'repair_'+ diomio_number)
 
     # Write the song.
-
-    '''# demonstrate prediction
-    x_input = array([[60, 65, 125], [70, 75, 145], [80, 85, 165]])
-    x_input = x_input.reshape((1, n_steps_in, n_features))
-    yhat = model.predict(x_input, verbose=0)
-    print(yhat)'''
+    path = mid.filename.split('.')
+    path = path[0] + '_fixed.' + path[1]
+    write_midi(mid,my_tracks, path)
 
 if __name__ == "__main__":
     main() 
