@@ -131,7 +131,7 @@ def reparador_felix_jr(tracks):
         if flag:
             train_batch(notes[0:i])
             note_predicted = predict(notes[i-n_steps:i])
-            notes[i] = note_predicted
+            notes[i] = round(note_predicted) if note_predicted < 127 else 127
     
     tracks[0] = meta_msgs
     tracks[1] = notes.tolist()
@@ -142,7 +142,7 @@ def reparador_felix_jr(tracks):
 model = None
 n_steps = 10 # n notes used to predict n features
 n_features = 1 # Only one track
-epochs = 200 # n passes through the dataset 
+epochs = 50 # n passes through the dataset 
 verbose = 1  #Show logs 
 
 def main():
@@ -159,21 +159,19 @@ def main():
     #Dañar
     for track in my_tracks:
         notes = track[1]
-        track[1],track[2] = ralph(notes,0.4)  
+        track[1],track[2] = ralph(notes,0.4)
     
     #escribir
     write_midi(mid,my_tracks,'broken_'+diomio_number)
+
     model = model_stacked_lstm(n_steps,n_features)
     #Reparar
     for pos,track in enumerate(my_tracks):
         my_tracks[pos] = reparador_felix_jr(track)
 
     write_midi(mid,my_tracks,'repair_'+ diomio_number)
-    
 
     # Write the song.
-
-
 
     '''# demonstrate prediction
     x_input = array([[60, 65, 125], [70, 75, 145], [80, 85, 165]])
