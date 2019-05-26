@@ -16,202 +16,165 @@ from mido import Message, MidiFile, MidiTrack
 from numpy import array
 from numpy import hstack
 import numpy as np
-#from tensorflow.keras import optimizers
-#from tensorflow.keras.models import Sequential
-#from tensorflow.keras.layers import LSTM
-#from tensorflow.keras.layers import Dense
-#from tensorflow.keras.layers import RepeatVector
-#from tensorflow.keras.layers import TimeDistributed
+import random
+from tensorflow.keras import optimizers
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import RepeatVector
+from tensorflow.keras.layers import TimeDistributed
 
 
-debug = True
-
-def show_info(mid):
-    print("Basic Info..")
-    print("Number of tracks {}: ", len(mid.tracks))
-    for i, track in enumerate(mid.tracks): 
-        print('Track {}: {}'.format(i, track.name))
-    print("Type: {}".format(mid.type))
-    print("Length in seconds: {}".format(mid.length))
-
-# split a multivariate sequence into samples
-def split_sequences(sequences, n_steps_in, n_steps_out):
-	X, y = list(), list()
-	for i in range(len(sequences)):
-		# find the end of this pattern
-		end_ix = i + n_steps_in
-		out_end_ix = end_ix + n_steps_out
-		# check if we are beyond the dataset
-		if out_end_ix > len(sequences):
-			break
-		# gather input and output parts of the pattern
-		seq_x, seq_y = sequences[i:end_ix, :], sequences[end_ix:out_end_ix, :]
-		X.append(seq_x)
-		y.append(seq_y)
-	return array(X), array(y)
-
-
-def unitary_train(tracks):
-    new_tracks = []
-    for i, track in enumerate(tracks):
-        track = np.array(track)
-        #out_seq = array([track[len(track) - 1] for i in range(len(track))])
-        # convert to [rows, columns] structure
-        track = track.reshape((len(track), 1))
-        new_tracks.append(track)
-
-    # horizontally stack columns
-    dataset = hstack(new_tracks)
-    print(dataset.shape)
-    
-    # choose a number of time steps
-    n_steps_in = 10
-    n_steps_out = 1
-    # convert into input/output
-    X, y = split_sequences(dataset, n_steps_in, n_steps_out)
-
-    # the dataset knows the number of features, e.g. 2
-    n_features = X.shape[2]
-
-    # define model
+def model_vanilla(n_steps,n_features):
+    global model
     model = Sequential()
-    model.add(LSTM(200, activation='relu', input_shape=(n_steps_in, n_features)))
-    model.add(RepeatVector(n_steps_out))
-    model.add(LSTM(200, activation='relu', return_sequences=True))
-    model.add(TimeDistributed(Dense(n_features)))
+    model.add(LSTM(50, activation='relu', input_shape=(n_steps, n_features)))
+    model.add(Dense(1))
     model.compile(optimizer='adam', loss='mse')
-    # fit model
-    model.fit(X, y, epochs=300, verbose=1)
+
+def model_stacked_lstm(n_steps,n_features):
+    global model
+    model = Sequential()
+    model.add(LSTM(50, activation='relu', return_sequences=True, input_shape=(n_steps, n_features)))
+    model.add(LSTM(50, activation='relu'))
+    model.add(Dense(1))
+    model.compile(optimizer='adam', loss='mse')
+
     return model
 
+def train_batch(notes):
+    x,y = split_sequence(notes, n_steps)
 
-def readMidi(mid):
-    n_channels = 16
-    seconds = mid.length
-    ticks_per_beat = mid.ticks_per_beat
-    ticks_per_second = ticks_per_beat * 2 # (120 beats / 60 seconds). 
-                                          # Default of 120 beats per minute.
-    l = []
-    for i, track in enumerate(mid.tracks):
-        l.append(len(track))
-    max_notes = max(l)
 
-    # define input sequences.
+    x = x.reshape((x.shape[0],x.shape[1],n_features))
 
-    tracks = np.full((n_channels, max_notes ), 60)
-    velocity = np.full((n_channels, max_notes), 64)
-    time = np.full((n_channels, max_notes), 0)
+    model.fit(x,y,epochs=epochs,verbose=verbose)
 
-    # Play the song ...
-    current_time = 0.0
-    i = 0
-    contador = 0
-    model = None
-    meta_msgs = []
-    notes_msgs = []
-    chanles_used = [False]*16
+def split_sequence(sequence, n_steps):
+    X, y = list(), list()
 
-    for msg in mid(meta_messages=True):
-        if msg.is_meta:
-            meta_msgs.append(msg)
-        if (msg.type == 'note_on'):
-            
-            if msg.time != current_time:
-                i = i + 1
-                current_time = msg.time
-            # type, channel, note, velocity, time.
-            if(not(chanles_used[msg.channel])):
-                chanles_used[msg.channel] = True
-            tracks[msg.channel][i] = msg.note
-            velocity[msg.channel][i] = msg.velocity
-            time[msg.channel][i] = msg.time
-            contador = contador + 1
+    for i in range(len(sequence)):
+        end_ix = i + n_steps
 
-    for chanel in range(0,n_channels):
-        if not(chanles_used[chanel]):
-            tracks = np.delete(tracks, chanel)
-            velocity = np.delete(velocity, chanel)
-            time = np.delete(time, chanel)
+        if end_ix > (len(sequence) -1):
+            break
+        
+        seq_x, seq_y = sequence[i:end_ix], sequence[end_ix]
+        X.append(seq_x)
+        y.append(seq_y)
     
-    return tracks,velocity,time,meta_msgs
+    return array(X), array(y)
 
+def ralph(notes,percent):
+    broken_pos = [False] * len(notes)
 
-def readMidi_2(mid):
+    for i,note in enumerate(notes):
+        ran  = random.random()
 
-    tracks = mid.tracks
+        if(ran < percent) and (i > 20):
+            broken_pos[i] = True
+            note.note = 0
 
-    #tracks = np.full((n_channels, max_notes ), 60)
-    #velocity = np.full((n_channels, max_notes), 64)
-    #time = np.full((n_channels, max_notes), 0)
+        
+    return notes,broken_pos
 
-    actual_time,acumulated_time = 0,0
-
-    meta_data = []
-    tracks = []
-    no_note = 60
-
-    for track in tracks:
-        new_track = []
-        new_meta = []
-        actual_time,acumulated_time = 0,0
-        for msg in track:
-            if msg.is_meta:
-                new_meta.append(msg)
-            else:
-                while True:
-                    pass
-                #if (actual_time + msg.time 
-
-
-
-
-
-def main():
-    # Read the file
-    mid = MidiFile('midi_partitures/el_aguacate.mid')
-
-    seconds = mid.length
-    ticks_per_beat = mid.ticks_per_beat
-    ticks_per_second = ticks_per_beat
-
-    print(seconds,ticks_per_beat,ticks_per_second)
-    
-
-
-    
-    #for track in mid.tracks:
-        #print(track)
-        #print('*'*65)
-        #for iduno in track:
-            #print(iduno)
-
-    #tracks,velocity,time,meta_msgs = readMidi(mid)
-
-    #print(tracks.shape)
-    #print(velocity.shape)
-    #print(time.shape)
-
-
-    
-
-    '''
-    # Write the song.
-    file = MidiFile(type=1)
-    for meta in enumerate(meta_msgs):
-        print(meta)
-    for i in range(0, n_channels):
+def write_midi(mid,my_tracks,diomio_number):
+    file = MidiFile(type=mid.type)
+    file.ticks_per_beat = mid.ticks_per_beat
+    for track in my_tracks:
         track_i = MidiTrack()
-        for j in range(0, max_notes):
-            track_i.append(Message('note_on', note=tracks[i][j], 
-                                velocity=velocity[i][j], time=time[i][j]))
+        #for msg in track[2]:
+            #track_i.append(msg)
+        
+        for meta_msg in track[0]:
+            track_i.append(meta_msg)
+        for note in track[1]:
+            track_i.append(note)
         
         file.tracks.append(track_i)
-    
-    file.print_tracks()
-    file.save('fixed_' + mid.filename)
+        
+    file.save('diomio_'+str(diomio_number)+'.mid')
     print('wrote')
 
-    '''
+def read_midi(mid):
+    my_tracks = []
+    for track in mid.tracks:
+        meta_msg = []
+        notes_msg = []
+        msgs = []
+        for msg in track:
+            msgs.append(msg)
+            if msg.type == 'note_on':
+                notes_msg.append(msg)
+            else:
+                meta_msg.append(msg)
+        
+        my_tracks.append([meta_msg,notes_msg,msgs])
+    
+    return my_tracks
+
+def predict(sequece):
+    x = sequece.reshape((1,n_steps,n_features))
+    yhat = model.predict(x,verbose=verbose)
+    return yhat
+
+def reparador_felix_jr(tracks):
+    meta_msgs, notes_msgs, flags = tracks
+    
+    notes = []
+    for msg in notes_msgs:
+        notes.append(msg.note)
+
+    notes = np.array(notes)
+
+    for i,flag in enumerate(flags):
+        if flag:
+            train_batch(notes[0:i])
+            note_predicted = predict(notes[i-n_steps:i])
+            notes[i] = note_predicted
+    
+    tracks[0] = meta_msgs
+    tracks[1] = notes.tolist()
+    tracks[2] = flags
+
+    return tracks
+
+model = None
+n_steps = 10 # n notes used to predict n features
+n_features = 1 # Only one track
+epochs = 200 # n passes through the dataset 
+verbose = 1  #Show logs 
+
+def main():
+    global model, n_steps, n_features
+    n_steps,n_features = 10,1
+    diomio_number = '9'
+
+    # Read the file
+    mid = MidiFile('midi_partitures/el_aguacate.mid')
+    
+    
+    my_tracks = read_midi(mid)
+
+    #Dañar
+    for track in my_tracks:
+        notes = track[1]
+        track[1],track[2] = ralph(notes,0.4)  
+    
+    #escribir
+    write_midi(mid,my_tracks,'broken_'+diomio_number)
+    model = model_stacked_lstm(n_steps,n_features)
+    #Reparar
+    for pos,track in enumerate(my_tracks):
+        my_tracks[pos] = reparador_felix_jr(track)
+
+    write_midi(mid,my_tracks,'repair_'+ diomio_number)
+    
+
+    # Write the song.
+
+
+
     '''# demonstrate prediction
     x_input = array([[60, 65, 125], [70, 75, 145], [80, 85, 165]])
     x_input = x_input.reshape((1, n_steps_in, n_features))
