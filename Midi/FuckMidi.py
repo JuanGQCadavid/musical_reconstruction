@@ -23,12 +23,16 @@ from tensorflow.keras.layers import LSTM
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import RepeatVector
 from tensorflow.keras.layers import TimeDistributed
+import copy
+import math
+import time
 
 
 def model_vanilla(n_steps,n_features):
     global model
     model = Sequential()
     model.add(LSTM(50, activation='relu', input_shape=(n_steps, n_features)))
+    model.add(LSTM(25, activation='relu' ))
     model.add(Dense(1))
     model.compile(optimizer='adam', loss='mse')
 
@@ -36,7 +40,7 @@ def model_stacked_lstm(n_steps,n_features):
     global model
     model = Sequential()
     model.add(LSTM(50, activation='relu', return_sequences=True, input_shape=(n_steps, n_features)))
-    model.add(LSTM(50, activation='relu'))
+    model.add(LSTM(25, activation='relu'))
     model.add(Dense(1))
     model.compile(optimizer='adam', loss='mse')
 
@@ -138,25 +142,56 @@ def reparador_felix_jr(tracks):
             start = i - (n_steps*2) if i > n_steps else 0
             train_batch(notes[start:i])
             note_predicted = predict(notes[i - n_steps:i])[0][0]
+            note_predicted = 0 if note_predicted < 0 else note_predicted
             notes[i] = round(note_predicted) if note_predicted < 127 else 127
             print(actual_i, '/' , max_i)
             actual_i = actual_i + 1
 
             notes_msgs[i].note = notes[i]
 
-    tracks[0] = meta_msgs
-    tracks[1] = notes_msgs
-    tracks[2] = flags 
-            
-
     return tracks
 
 model = None
-n_steps = 10 # n notes used to predict n features
+n_steps = 15 # n notes used to predict n features
 n_features = 1 # Only one track
-epochs = 50 # n passes through the dataset 
+epochs = 100 # n passes through the dataset 
 verbose = 0  #Show logs
 damage_rate = 0.2 # Damage
+
+def compare_midi(real,my_tracks,times):
+    print('inside')
+
+    for pos,track in enumerate(my_tracks):
+        print("TRACK ", pos)
+        p_meta_msgs, p_notes_msgs, p_flags = my_tracks[pos]
+        r_meta_msgs, r_notes_msgs, r_flags = real[pos]
+        acomulated_error = 0
+        if len(p_notes_msgs) == 0:
+            continue
+
+        corrupted_counter = 0 
+        for j,p_msg_note in enumerate(p_notes_msgs):
+            r_msg_note = r_notes_msgs[j]
+            
+            if p_flags[j]:
+                corrupted_counter = corrupted_counter + 1
+                error_relativo = (math.fabs(r_msg_note.note-p_msg_note.note)/r_msg_note.note)*100
+                print('Real ->', r_msg_note.note, ' Predicted ->',p_msg_note.note,'Error ->',error_relativo)
+                acomulated_error += error_relativo
+        
+        print(acomulated_error,corrupted_counter)
+        acomulated_error =  acomulated_error/corrupted_counter
+        print('Error Relativo acomulado: ',acomulated_error)
+
+        print('Time Training')
+        time_acumulate = 0
+        for i in range(1,len(times)):
+            print('Time in track',i,' -> ',times[i])
+            time_acumulate += times[i]
+        
+        print('Promedium ->',time_acumulate/(len(times)-1))
+
+
 
 def main():
     global model, n_steps, n_features
@@ -167,7 +202,7 @@ def main():
     mid = MidiFile('midi_partitures/happy.mid')
 
     my_tracks = read_midi(mid)
-    real = my_tracks.copy()
+    real = copy.deepcopy(my_tracks)
 
     #Dañar
     for track in my_tracks:
@@ -182,15 +217,28 @@ def main():
     model = model_stacked_lstm(n_steps,n_features)
     #Reparar
 
+    times = []
     for pos,track in enumerate(my_tracks):
         print("TRACK ", pos)
+        actual_time = time.time() 
         my_tracks[pos] = reparador_felix_jr(track)
+        delta_time = time.time()  - actual_time
+        print('Delta time ->', delta_time)
+        times.append(delta_time)
+
+
+        
 
 
     # Write the song.
     path = mid.filename.split('.')
     path = path[0] + '_fixed.' + path[1]
     write_midi(mid,my_tracks, path)
+
+    compare_midi(real,my_tracks,times)
+
+
+
 
 if __name__ == "__main__":
     main() 
